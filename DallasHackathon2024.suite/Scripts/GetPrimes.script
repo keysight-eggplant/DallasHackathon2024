@@ -1,0 +1,35 @@
+﻿global min, max, len, type, order -- stores variables as globals to be used by API Test
+
+put 2 into min -- smallest prime to return
+put 5000 into max -- largest prime to return
+put 1000 into len -- the free version of this API will only return up to 1000 results
+put "number" into type -- tells API that min and max numbers are based on value of the prime and not the sequence
+put 1 into order -- sorts primes in numeric order (ascending)
+
+Try
+	PrimeNumbers -- executes API test
+Catch
+	Log "API is offline. Retrying..." -- occasionally API test site is unavailable
+	Wait 60
+	PrimeNumbers
+End Try
+
+// splits prime numbers into two groups because there are more than 1000 primes below 5000
+// the free version of this API will only return up to 1000 results
+put the result into global myPrimesBelow5000
+log item 1 of global myPrimesBelow5000 -- sanity check to see whether the API call worked
+
+put 5001 into min -- smallest prime to return
+put 10000 into max -- largest prime to return
+put 1000 into len -- the free version of this API will only return up to 1000 results
+put "number" into type -- tells API that min and max numbers are based on value of the prime and not the sequence
+put 1 into order -- sorts primes in numeric order (ascending)
+
+PrimeNumbers
+put the result into global myPrimesAbove5000
+log item 1 of global myPrimesAbove5000 -- sanity check to see whether the API call worked
+
+
+
+
+

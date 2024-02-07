@@ -1,0 +1,66 @@
+﻿function PrimeChecker myPossiblePrimeNumber
+	//required because API site is limited to 1000 free responses per query
+	If myPossiblePrimeNumber <= 5000 then
+		put each item of global myPrimesBelow5000 whose number = myPossiblePrimeNumber into myPrimeYN
+	Else
+		put each item of global myPrimesAbove5000 whose number = myPossiblePrimeNumber into myPrimeYN
+	End If
+	
+	If myPrimeYN is empty then
+		--Log "The number is not prime."
+		Return false
+	Else
+		--Log "The number is prime."
+		Return true
+	End If
+end PrimeChecker
+
+//based on the logic found here: https://rosettacode.org/wiki/Talk:Magnanimous_numbers
+function EvenNumberLogic myENL_Number
+	
+	put (the number of characters of myENL_Number) -1 into myRepeatCounter
+	//returns true and exits handler if the last character is odd or a single digit because logic will not apply
+	//true means COULD BE magnanimous
+	if character (myRepeatCounter+1) of myENL_Number is an odd number or if myRepeatCounter < 2 then
+		Return true
+		Exit Handler
+	end if
+	
+	//processes numbers whose last digit is even
+	repeat myRepeatCounter times
+		//returns false and exits handler if any number is even because logic dictates that it can't be magnanimous
+		//false means NOT magnanimous
+		if character (repeatindex()) of myENL_Number is an even number then
+			Return false
+			Exit Repeat
+		end if
+		
+	end repeat
+	//true means COULD BE magnanimous
+	Return true
+	
+end EvenNumberLogic
+
+function SumChecker mySumsNumber
+	put (the number of characters of mySumsNumber) - 1 into myRepeatCounter
+	repeat myRepeatCounter times
+		put repeatindex() into x
+		put characters 1 to x of mySumsNumber into myFirstNumber
+		put characters x+1 to 7 of mySumsNumber into mySecondNumber
+		put myFirstNumber+mySecondNumber into mySum
+		if MyHandlers.PrimeChecker(mySum) is false then
+			return false
+			exit handler
+		end if
+	end repeat
+	return true
+end SumChecker
+
+to handle StoreAndVerify myNumberToCheck
+	put myNumberToCheck into global CurrentRecord.Calculated
+	if global CurrentRecord.Actual = global CurrentRecord.Calculated then
+		put TRUE into global CurrentRecord.Verified
+	Else
+		put FALSE into global CurrentRecord.Verified
+	end if
+end StoreAndVerify

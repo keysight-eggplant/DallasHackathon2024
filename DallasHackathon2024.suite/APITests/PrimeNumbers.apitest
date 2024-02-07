@@ -1,0 +1,46 @@
+{
+    URLparameters = (
+	{
+	    checkedNumber = <*BY>;
+	    param = min;
+	    showCheckedNumber = <*BY>;
+	    value = "[[global min]]";
+	},
+	{
+	    checkedNumber = <*BY>;
+	    param = max;
+	    showCheckedNumber = <*BY>;
+	    value = "[[global max]]";
+	},
+	{
+	    checkedNumber = <*BY>;
+	    param = len;
+	    showCheckedNumber = <*BY>;
+	    value = "[[global len]]";
+	},
+	{
+	    checkedNumber = <*BY>;
+	    param = type;
+	    showCheckedNumber = <*BY>;
+	    value = "[[global type]]";
+	},
+	{
+	    checkedNumber = <*BY>;
+	    param = order;
+	    showCheckedNumber = <*BY>;
+	    value = "[[global order]]";
+	}
+    );
+    authenticationType = None;
+    httpVerb = GET;
+    oauth1Token = "";
+    password = "";
+    requestBody = "";
+    requestBodyFormat = "Form Url Encoded";
+    requestHeaders = "<![CDATA[]]>";
+    requests = "";
+    testResults = "";
+    testScript = "return jsonvalue(api().responseBody)";
+    url = "https://prime-number-api.onrender.com/primeNumbers?min=[[global min]]&max=[[global max]]&len=[[global len]]&type=[[global type]]&order=[[global order]]";
+    userName = "";
+}

@@ -1,0 +1,66 @@
+﻿global CurrentRecord
+
+put the time into myStartTime -- records when the script statrts
+
+GetPrimes -- calls script that launches an API test that pulls and stores prime numbers
+
+set myConnectionString to (type:"Excel",file:ResourcePath("MAG-1.xlsx"),writable:yes) -- creates connection to Excel spreadsheet
+put the number of records of myConnectionString into myRecordCount -- determines whether I have filled the spreadsheet
+put 0 into myNumberToCheck -- provides the initial number to check for "magnanimity"
+set IsMagnanimousNumber to false -- sets inital state
+
+Repeat myRecordCount times -- fills the spreadsheet
+	Set CurrentRecord to the record of myConnectionString where "Order" = repeatindex() -- moves record pointer as magnanimous numbers are added
+	Repeat while IsMagnanimousNumber is false
+		//case statement follows
+		if ...
+		//accounts for numbers 0..9 are all magnanimous
+			... myNumberToCheck < 10 then -- numbers 0..9 are all magnanimous
+				MyHandlers.StoreAndVerify myNumberToCheck -- calls StoreAnd Verify handler from MyHandlers script
+				put true into IsMagnanimousNumber -- sets flag to iterate repeat loop
+				
+				//accounts for numbers that end with an even number must have all odd numbers preceding it to be magnanimous
+			... MyHandlers.EvenNumberLogic(myNumberToCheck) is false then put false into IsMagnanimousNumber -- calls StoreAnd Verify handler from MyHandlers script and does not iterate repeat loop
+			
+			//performs sum checking of digits
+			... MyHandlers.SumChecker(myNumberToCheck) is false then put false into IsMagnanimousNumber -- calls EvenNumberLogic handler from MyHandlers script and does not iterate repeat loop
+			
+			//flags all reamining numbers as magnanimous
+			... else
+				MyHandlers.StoreAndVerify myNumberToCheck -- numbers that filter through the cases above must be magnanimous
+				put true into IsMagnanimousNumber -- sets flag to iterate repeat loop
+				
+		end if
+		
+		set myNumberToCheck = myNumberToCheck + 1 -- iterate to next number to check
+	End Repeat
+	
+	If repeatindex() = ...
+	
+		... 45 :
+			put the time into myFirst45Time
+		... 100 :
+			put the time into myFirst100Time
+		... 250 :
+			put the time into myFirst250Time
+			
+		... Else
+			
+	End if
+	
+	put false into IsMagnanimousNumber -- resets repeat criteria
+End Repeat
+
+convert myStartTime to abbreviated International Time
+convert myFirst45Time to abbreviated International Time
+convert myFirst100Time to abbreviated International Time
+convert myFirst250Time to abbreviated International Time
+
+
+Log "The time for the first 45 magnanimous numbers was"&&(myFirst45Time-myStartTime)
+Log "The time for the first 100 magnanimous numbers was"&&(myFirst100Time-myStartTime)
+Log "The time for the first 250 magnanimous numbers was"&&(myFirst250Time-myStartTime)
+
+
+
+
